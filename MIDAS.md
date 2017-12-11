@@ -2,17 +2,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org90f799c">1. Hardware</a></li>
+<li><a href="#org7af216e">1. Switching over to MIDAS</a></li>
 </ul>
 </div>
 </div>
 
 
-<a id="org90f799c"></a>
+<a id="org7af216e"></a>
 
-# Hardware
+# Switching over to MIDAS
 
-1.  Take veto (O1) out of VM-USB module in VME crate
+1.  Hardware
 
-2.  Plug the twisted pair cable into veto of ADC (red on top)
+    -   Take veto (O1) out of VM-USB module in VME crate
+    -   Plug the twisted pair cable into veto of ADC (red on top)
 

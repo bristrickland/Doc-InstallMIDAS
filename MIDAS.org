@@ -12,6 +12,7 @@
 #+EXCLUDE_TAGS: noexport
 #+CREATOR: Emacs 24.5.1 (Org mode 9.0.5)
 
-* Hardware
-** Take veto (O1) out of VM-USB module in VME crate
-** Plug the twisted pair cable into veto of ADC (red on top)
+* Switching over to MIDAS
+** Hardware
+   + Take veto (O1) out of VM-USB module in VME crate
+   + Plug the twisted pair cable into veto of ADC (red on top)
