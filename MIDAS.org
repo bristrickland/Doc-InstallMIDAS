@@ -1,0 +1,17 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:1 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: MIDAS
+#+DATE: <2017-12-11 Thu>
+#+AUTHOR: Richard Longland
+#+EMAIL: longland@X1Carbon
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 24.5.1 (Org mode 9.0.5)
+
+* Hardware
+** Take veto (O1) out of VM-USB module in VME crate
+** Plug the twisted pair cable into veto of ADC (red on top)
