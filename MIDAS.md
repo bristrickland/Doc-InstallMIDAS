@@ -2,13 +2,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga13b792">1. Switching over to MIDAS</a></li>
+<li><a href="#org7c68ca9">1. Switching over to MIDAS</a></li>
 </ul>
 </div>
 </div>
 
 
-<a id="orga13b792"></a>
+<a id="org7c68ca9"></a>
 
 # Switching over to MIDAS
 
@@ -26,5 +26,33 @@
         -   Run files saved at `v785` (symbolic link)
         -   v785 points to specific directory (eg. `/2017-11-14_DAQTests`)
         -   Actual DAQ code is in `/home/daq/midas/online/src/v785`
-            -   `v785` is the experiment name
+            -   'v785' is the experiment name
+    
+    2.  Starting the DAQ
+    
+        -   See what experiment is active
+            
+                echo $MIDAS_EXPT_NAME
+        -   If it's not 'v785', do this:
+            
+                export MIDAS_EXPT_NAME=v785
+        -   Move into the experiement directory
+            
+                cd /home/daq/midas/online/src/v785
+        -   To start the DAQ
+            
+                ./start_daq.sh
+            
+            The analyzer should pop up (there may be a couple of errors but
+            ignore them)
+        -   Open google chrome
+            -   Click on MIDAS bookmark
+            -   If there's an error about security, go to Advanced -> proceed anyway
+            -   Username: daq
+            -   Password: the usual ;)
+            -   Click on "EngeRun" to go to the Enge-specific run page
+            -   Click on "ODB" at the top
+            -   Click on "Run info"
+            -   Click on "Run Number", set to zero if this is a new experiment
+        -   
 
