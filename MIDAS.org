@@ -49,7 +49,37 @@
       + Username: daq
       + Password: the usual ;)
       + Click on "EngeRun" to go to the Enge-specific run page
+      + Logger and analyzer should be green
       + Click on "ODB" at the top
       + Click on "Run info"
       + Click on "Run Number", set to zero if this is a new experiment
-    + 
+    + Start the frontend
+      + In a terminal, open a new window or tab
+	#+BEGIN_SRC sh
+	cd /home/daq/midas/online/src/v785
+	./sync
+	ssh engesbc
+	cd midas/online/src/v785
+	make clean
+	make
+	./start_fe.sh
+	#+END_SRC
+	You should see a bunch of things in the terminal that make it
+        look like everything's working (running clock, run status, etc.)
+      + "Frontend" should now be green in browser
+    + Start the root analyzer
+      + Go to the original terminal
+	#+BEGIN_SRC sh
+	cd rootana
+	./anaDistplay.exe
+	#+END_SRC
+      + Close the graph window that opened
+      + Resize the other window (silly fix for window wize issues)
+      + "Root Analyzer" should now be green in browser
+*** Quit the DAQ
+    + Quit root analyzer by pressing the "quit" button
+    + Go to ~src/v785~ directory
+      #+BEGIN_SRC sh
+      ./kill_daq.sh
+      #+END_SRC
+    + F5 on webpage should show that it disappeared

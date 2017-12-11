@@ -2,13 +2,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7c68ca9">1. Switching over to MIDAS</a></li>
+<li><a href="#org7a47d64">1. Switching over to MIDAS</a></li>
 </ul>
 </div>
 </div>
 
 
-<a id="org7c68ca9"></a>
+<a id="org7a47d64"></a>
 
 # Switching over to MIDAS
 
@@ -51,8 +51,38 @@
             -   Username: daq
             -   Password: the usual ;)
             -   Click on "EngeRun" to go to the Enge-specific run page
+            -   Logger and analyzer should be green
             -   Click on "ODB" at the top
             -   Click on "Run info"
             -   Click on "Run Number", set to zero if this is a new experiment
-        -   
+        -   Start the frontend
+            -   In a terminal, open a new window or tab
+                
+                    cd /home/daq/midas/online/src/v785
+                    ./sync
+                    ssh engesbc
+                    cd midas/online/src/v785
+                    make clean
+                    make
+                    ./start_fe.sh
+                
+                You should see a bunch of things in the terminal that make it
+                look like everything's working (running clock, run status, etc.)
+            -   "Frontend" should now be green in browser
+        -   Start the root analyzer
+            -   Go to the original terminal
+                
+                    cd rootana
+                    ./anaDistplay.exe
+            -   Close the graph window that opened
+            -   Resize the other window (silly fix for window wize issues)
+            -   "Root Analyzer" should now be green in browser
+    
+    3.  Quit the DAQ
+    
+        -   Quit root analyzer by pressing the "quit" button
+        -   Go to `src/v785` directory
+            
+                ./kill_daq.sh
+        -   F5 on webpage should show that it disappeared
 
