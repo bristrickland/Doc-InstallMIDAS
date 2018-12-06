@@ -15,7 +15,7 @@
 * Switching over to MIDAS
 ** Hardware
    + Take veto (O1) out of VM-USB module in VME crate
-   + Plug the twisted pair cable into veto of ADC (red on top)
+   + Plug the twisted pair cable into busy of ADC (red on bottom)
 ** Software
 *** General Notes:
     + Data is saved in  ~/home/daq/midas/online~
