@@ -15,7 +15,7 @@
 1.  Hardware
 
     -   Take veto (O1) out of VM-USB module in VME crate
-    -   Plug the twisted pair cable into veto of ADC (red on top)
+    -   Plug the twisted pair cable into busy of ADC (red on bottom)
 
 2.  Software
 
@@ -85,4 +85,3 @@
             
                 ./kill_daq.sh
         -   F5 on webpage should show that it disappeared
-
