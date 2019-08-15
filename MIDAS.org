@@ -12,7 +12,52 @@
 #+EXCLUDE_TAGS: noexport
 #+CREATOR: Emacs 24.5.1 (Org mode 9.0.5)
 
-* Switching over to MIDAS
+* Install
+  This is based on the new install instructions on the TRIUMF website
+** Environment
+   Make sure you have something like the following set in .bashrc
+   #+BEGIN_SRC sh
+   ## MIDAS
+   export MIDASSYS=/home/daq/midas/packages/midas
+   export PATH=$PATH:$MIDASSYS/linux/bin
+   export MIDAS_EXPTAB=/home/daq/midas/online/exptab
+   export MIDAS_EXPT_NAME=v785
+   export ROOTANASYS=/home/daq/midas/packages/rootana
+   #+END_SRC
+** Package installation
+   + Get the source
+     #+BEGIN_SRC sh
+     cd ~
+     mkdir -p midas/packages
+     cd midas/packages
+     git clone https://bitbucket.org/tmidas/midas --recursive
+     cd midas
+     #+END_SRC
+   + Checkout a release version
+     #+BEGIN_SRC sh
+     git checkout midas-2019-06-b
+     #+END_SRC
+   + Build midas
+     #+BEGIN_SRC sh
+     mkdir build
+     cd build
+     cmake ..
+     make
+     make install
+     #+END_SRC
+   + Rootana is needed
+     #+BEGIN_SRC sh
+     cd $HOME/midas/packages
+     git clone https://bitbucket.org/tmidas/rootana
+     cd rootana
+     make
+     #+END_SRC
+   + Install JSROOT just in case we need it (for browser views of root files)
+     #+BEGIN_SRC sh
+     cd $HOME/midas/packages
+     git clone https://github.com/linev/jsroot.git
+     #+END_SRC
+* Switching over to MIDAS from NSCLDAQ
 ** Hardware
    + Take veto (O1) out of VM-USB module in VME crate
    + Plug the twisted pair cable into busy of ADC (red on bottom)
