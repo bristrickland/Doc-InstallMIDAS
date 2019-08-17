@@ -19,7 +19,7 @@
    #+BEGIN_SRC sh
    ## MIDAS
    export MIDASSYS=/home/daq/midas/packages/midas
-   export PATH=$PATH:$MIDASSYS/linux/bin
+   export PATH=$PATH:$MIDASSYS/bin
    export MIDAS_EXPTAB=/home/daq/midas/online/exptab
    export MIDAS_EXPT_NAME=v785
    export ROOTANASYS=/home/daq/midas/packages/rootana
@@ -57,12 +57,87 @@
      cd $HOME/midas/packages
      git clone https://github.com/linev/jsroot.git
      #+END_SRC
+** Setting up experiment structure
+   + See if the exptab file below already exists. If not: 
+     #+BEGIN_SRC sh
+     cd
+     mkdir midas/online
+     cd midas/online
+     cat > exptab
+       v785 /home/daq/midas/online/data/v785 daq
+     #+END_SRC
+     (Press ctrl-c to exit the cat command)
+   + Make the directory structures (data is a link to the storage partition)
+     #+BEGIN_SRC sh
+     cd ~/midas/online
+     mkdir -p /data/midas/data
+     ln -s /data/midas/data data
+     mkdir elog
+     mkdir history
+     mkdir src
+     #+END_SRC
+   + To separate experiments I like to create a link in the data directory ([[StorageLinks][see below for more]])
+     #+BEGIN_SRC sh
+     cd /data/midas/data
+     mkdir TestExperiment
+     ln -s TestExperiment v785
+     ls -l
+     #+END_SRC
+   + Test the system
+     #+BEGIN_SRC sh
+     odbedit
+     ls
+     #+END_SRC
+     You should see the following:
+     #+BEGIN_SRC sh
+     [local:v785:S]/>ls
+     Experiment                      
+     System                          
+     Programs                        
+     Logger                          
+     Runinfo                         
+     Alarms                          
+     [local:v785:S]/>
+     #+END_SRC
+     Press ~ctrl-c~ to exit
+** Download the Enge MIDAS DAQ
+   + The DAQ is already written (probably with some improvements that should be made)
+     #+BEGIN_SRC sh
+     cd $HOME/midas/online/src
+     git clone http://engesrv.physics.ncsu.edu/midas/v785.git
+     cd v785
+     make clean
+     #+END_SRC
+   + With the new version of MIDAS, some work need to be done to get the DAQ working. The following command may fail
+     #+BEGIN_SRC sh
+     make
+     #+END_SRC
+     If so, see: https://midas.triumf.ca/MidasWiki/index.php/Changelog#Upgrade_guide
+   + The corrected version is on the c++ branch:
+     #+BEGIN_SRC sh
+     git checkout c++
+     make clean
+     make
+     #+END_SRC
+** Password security
+   + Run the httpd server
+     #+BEGIN_SRC sh
+     mhttpd
+     #+END_SRC
+   + The first time you run the MIDAS http server it'll give you some errors. Do what it tells you:
+     #+BEGIN_SRC sh
+     cd $MIDASSYS
+     openssl req -new -nodes -newkey rsa:2048 -sha256 -out ssl_cert.csr -keyout ssl_cert.key -subj "/C=/ST=/L=/O=midas/OU=mhttpd/CN=localhost"
+     openssl x509 -req -days 365 -sha256 -in ssl_cert.csr -signkey ssl_cert.key -out ssl_cert.pem
+     cat ssl_cert.key >> ssl_cert.pem
+     #+END_SRC
+   + Try again ~mhhtpd~
 * Switching over to MIDAS from NSCLDAQ
 ** Hardware
    + Take veto (O1) out of VM-USB module in VME crate
    + Plug the twisted pair cable into busy of ADC (red on bottom)
 ** Software
-*** General Notes:
+*** General Notes <<StorageLinks>>:
     + Data is saved in  ~/home/daq/midas/online~
       + link points to ~/data/midas/data~
     + Run files saved at ~v785~ (symbolic link)
