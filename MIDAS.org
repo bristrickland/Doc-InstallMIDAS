@@ -24,6 +24,9 @@
    export MIDAS_EXPT_NAME=v785
    export ROOTANASYS=/home/daq/midas/packages/rootana
    #+END_SRC
+** Prerequisites
+   + Everything in the standard install
+   + ~apache2-utils~
 ** Package installation
    + Get the source
      #+BEGIN_SRC sh
@@ -58,13 +61,13 @@
      git clone https://github.com/linev/jsroot.git
      #+END_SRC
 ** Setting up experiment structure
-   + See if the exptab file below already exists. If not: 
+   + See if the exptab file below already exists. make sure it looks like the 5th line below: 
      #+BEGIN_SRC sh
      cd
      mkdir midas/online
      cd midas/online
      cat > exptab
-       v785 /home/daq/midas/online/data/v785 daq
+       v785 /home/daq/midas/online/ daq
      #+END_SRC
      (Press ctrl-c to exit the cat command)
    + Make the directory structures (data is a link to the storage partition)
@@ -131,7 +134,64 @@
      openssl x509 -req -days 365 -sha256 -in ssl_cert.csr -signkey ssl_cert.key -out ssl_cert.pem
      cat ssl_cert.key >> ssl_cert.pem
      #+END_SRC
-   + Try again ~mhhtpd~
+   + Try again ~mhhtpd~ and do what it tells you (almost! - but put the password somewhere else and use the ~daq~ user
+     #+BEGIN_SRC sh
+     touch /home/daq/midas/online/htpasswd.txt
+     htdigest /home/daq/midas/online/htpasswd.txt v785 daq
+     #+END_SRC
+     Use the usual ~daq~ password when prompted
+   + Try one more time! ~mhttpd~
+     You should now be able to open a browser and go to ~localhost:8443~ (feel free to tell the browser you trust the website!)
+** Logger
+   This saves the data! So make sure it works and then tell MIDAS that it's absolutely needed!
+   #+BEGIN_SRC sh
+   mlogger
+   #+END_SRC
+   Check for errors
+   + Set up MIDAS to make sure mlogger is always running
+     1. Start the http server: ~mhttpd~
+     2. In a browser, go to ~localhost:8443~
+     3. From MIDAS page go to "ODB" -> "Programs" -> "Logger"
+     4. Set Required to "y", Start Commant to "mlogger -D", Alarm class to "Alarm"
+** Test the demo frontend
+   + Go to the v785 source directory, make sure everything compiles
+     #+BEGIN_SRC sh
+     cd ~/midas/online/src/v785
+     make
+     ls -ltr
+     #+END_SRC
+     One of the recent files should be ~fedemo~
+   + There should be a shell script that starts MIDAS with this demo. It should look something like:
+     #+BEGIN_SRC sh
+     #!/bin/sh
+
+     export MIDAS_EXPT_NAME='v785'
+
+     # First make sure the DAQ is stopped
+     ./kill_daq.sh
+
+     # Clean the ODB (Online DataBase)
+     odbedit -c clean
+     
+     # Start the logger, which does the saving of information
+     mlogger -D
+     sleep 2     
+
+     # Start the web control
+     mhttpd -D -a localhost 
+     
+     # Start the analyser
+     konsole -e ./analyzer&
+     
+     make clean
+     make fedemo
+     konsole -e ./fedemo&
+     #end file
+     #+END_SRC
+   + Try running that: ~./start_demo.sh~
+     Several windows should open!
+   + The first time it's run you'll see some analyzer errors about a missing "last.root" file. Don't worry about that!
+   + Open the web browser at ~localhost:8443~. Look to make sure everything works. Try starting and stopping a run. The demo runs at about 100 Hz.
 * Switching over to MIDAS from NSCLDAQ
 ** Hardware
    + Take veto (O1) out of VM-USB module in VME crate
