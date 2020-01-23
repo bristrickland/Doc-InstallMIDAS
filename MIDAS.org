@@ -264,3 +264,125 @@
       ./kill_daq.sh
       #+END_SRC
     + F5 on webpage should show that it disappeared
+* Single-board Computer
+** Setup SBC  
+   - Do a fresh install of CentOS 7
+   - Somehow connect it to the internet (I used a wifi dongle and the CraneLabWireless)
+   - Do the following commands
+     #+BEGIN_SRC sh
+     yum update
+     yum groupinstall 'Development Tools'
+     yum install epel-release
+     yum install cmake3 kernel-devel kernel-headers openssl-devel sqlite-devel
+     ln -s /usr/bin/cmake3 /usr/bin/cmake
+     #+END_SRC
+   - Reboot to use the correct kernel
+** Install MIDAS
+   - This is a simplified version of the instructions above, but only
+     install what's needed on the SBC
+     #+BEGIN_SRC sh
+     cd ~
+     mkdir -p midas/packages
+     cd midas/packages
+     git clone https://bitbucket.org/tmidas/midas --recursive
+     cd midas
+     #+END_SRC
+   - Checkout a release version (the same version as on the DAQ machine)
+     #+BEGIN_SRC sh
+     git checkout midas-2019-06-b
+     #+END_SRC
+   - Build midas
+     #+BEGIN_SRC sh
+     mkdir build
+     cd build
+     cmake ..
+     make
+     make install
+     #+END_SRC
+   - Put the following in ~~/.bashrc~
+     #+BEGIN_SRC sh
+     ## MIDAS
+     export MIDASSYS=/home/daq/midas/packages/midas
+     export PATH=$PATH:$MIDASSYS/bin
+     export MIDAS_EXPTAB=/home/daq/midas/online/exptab
+     export MIDAS_EXPT_NAME=v1730
+     #export ROOTANASYS=/home/daq/midas/packages/rootana
+
+     export MIDAS_SERVER_HOST=10.0.0.1:1175
+     #+END_SRC
+** Install the VME modules
+   - Based on instructions in
+     https://daq.triumf.ca/DaqWiki/index.php/VME-CPU#V7865_and_XVB-602_:_Setup_gefvme.2Ftsi148_VME_drivers
+     #+BEGIN_SRC sh
+     git clone https://ladd00.triumf.ca/~olchansk/git/kernel-module-gefvme.git
+     cd kernel-module-gefvme
+     make
+     sudo make install
+     sudo sh /etc/rc.local
+     dmesg 
+     #+END_SRC
+   - If this worked properly, ~dmesg~ should show some stuff about 
+     #+BEGIN_SRC sh
+     [   18.703633] tsi148: VME master control register VMCTRL: 0x00000003
+     [   18.703637] tsi148: VME control register         VCTRL: 0x00000008
+     [   18.703641] tsi148: VME status register          VSTAT: 0x00000100
+     [   18.703644] tsi148: DMA channel 0 status: 0x02000000
+     [   18.703648] tsi148: DMA channel 1 status: 0x02000000
+     [   18.703651] tsi148: Interrupt enable register     INTEN: 0x03ff20fe
+     [   18.703655] tsi148: Interrupt enable out register INTEO: 0x03ff20fe
+     [   18.703658] tsi148: Control and status register   GCTRL: 0x10000001
+     #+END_SRC
+   - Make sure that runs on boot
+     #+BEGIN_SRC sh
+     sudo chmod +x /etc/rc.d/rc.local
+     #+END_SRC
+   - Reboot and check ~dmesg~ again
+   - Install the test software
+     #+BEGIN_SRC sh
+     cd ~/midas/packages
+     svn checkout https://ladd00.triumf.ca/svn/daqsvn/trunk/vme # username svn, password svn
+     cd vme
+     make -k # some programs will fail to build, this is expected.
+     #+END_SRC
+   - Run test software
+     #+BEGIN_SRC sh
+     ./vmescan_gef.exe
+     #+END_SRC
+** Finish setting up the network
+   (This may be a little trial and error)
+   - Edit the network using ~nmtui~
+     - I'm editing port ~enp9s0~
+     - IP4 Configuration = ~<Manual>~
+     - Address = ~10.0.0.5/24~
+     - Make sure ~Automatically Connect~ and ~Available to all users~
+       are checked
+   - Edit the hostname: ~sudo vi /etc/hostname~
+     #+BEGIN_SRC sh
+     engesbc
+     #+END_SRC
+   - Edit the hosts: ~sudo vi /etc/hosts~
+     #+BEGIN_SRC sh
+     127.0.0.1   localhost 
+     127.0.0.1   engesbc
+     10.0.0.1    engedaq-dev
+     #+END_SRC
+   - Make sure the firewall is set up as expected
+     #+BEGIN_SRC sh
+     sudo firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="10.0.0.1/32" port protocol="tcp" port="0-65535" accept"
+     sudo firewall-cmd --reload
+     sudo firewall-cmd --list-all
+     #+END_SRC
+   - Reboot
+** Test the MIDAS works
+   - Copy a frontend over (eg ~/midas/online/src/v785~)
+   - Make sure it compiles
+     #+BEGIN_SRC sh
+     cd ~/midas/online/src/v785
+     make clean
+     make
+     #+END_SRC
+   - Make sure the connection works
+     #+BEGIN_SRC sh
+     odbedit
+     #+END_SRC
+   - Troubleshoot!
