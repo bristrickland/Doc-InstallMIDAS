@@ -38,7 +38,7 @@
      #+END_SRC
    + Checkout a release version
      #+BEGIN_SRC sh
-     git checkout midas-2019-06-b
+     git checkout midas-2020-08-a
      #+END_SRC
    + Build midas
      #+BEGIN_SRC sh
