@@ -108,7 +108,7 @@
    + The DAQ is already written (probably with some improvements that should be made)
      #+BEGIN_SRC sh
      cd $HOME/midas/online/src
-     git clone http://engesrv.physics.ncsu.edu/midas/v785.git
+     git clone https://github.com/TUNL-Enge/MIDAS-v785.git v785
      cd v785
      make clean
      #+END_SRC
@@ -289,7 +289,7 @@
      #+END_SRC
    - Checkout a release version (the same version as on the DAQ machine)
      #+BEGIN_SRC sh
-     git checkout midas-2019-06-b
+     git checkout midas-2020-08-a
      #+END_SRC
    - Build midas
      #+BEGIN_SRC sh
