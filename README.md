@@ -1,2 +1,2 @@
-# Doc-InstallMIDAS
+# Install MIDAS
 See MIDAS.org
