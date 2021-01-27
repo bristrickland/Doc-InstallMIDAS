@@ -142,7 +142,7 @@
      #+END_SRC
      Use the usual ~daq~ password when prompted
    + Try one more time! ~mhttpd~
-     You should now be able to open a browser and go to ~localhost:8443~ (feel free to tell the browser you trust the website!)
+     You should now be able to open a browser and go to ~localhost:8080~ (feel free to tell the browser you trust the website!)
 ** Logger
    This saves the data! So make sure it works and then tell MIDAS that it's absolutely needed!
    #+BEGIN_SRC sh
