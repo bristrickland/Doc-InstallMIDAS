@@ -151,7 +151,7 @@
    Check for errors
    + Set up MIDAS to make sure mlogger is always running
      1. Start the http server: ~mhttpd~
-     2. In a browser, go to ~localhost:8443~
+     2. In a browser, go to ~localhost:8080~
      3. From MIDAS page go to "ODB" -> "Programs" -> "Logger"
      4. Set Required to "y", Start Commant to "mlogger -D", Alarm class to "Alarm"
 ** Test the demo frontend
@@ -192,7 +192,7 @@
    + Try running that: ~./start_demo.sh~
      Several windows should open!
    + The first time it's run you'll see some analyzer errors about a missing "last.root" file. Don't worry about that!
-   + Open the web browser at ~localhost:8443~. Look to make sure everything works. Try starting and stopping a run. The demo runs at about 100 Hz.
+   + Open the web browser at ~localhost:8080~. Look to make sure everything works. Try starting and stopping a run. The demo runs at about 100 Hz.
 * Switching over to MIDAS from NSCLDAQ
 ** Hardware
    + Take veto (O1) out of VM-USB module in VME crate
