@@ -56,6 +56,10 @@
      #+END_SRC
      + Rootana needs ~-fPIC~ to work with EngeSpec
      + Edit ~Makefile~ to include ~-fPIC~ in the ~CXXFLAGS~ definition at the top
+     + compile (without ROOT support)
+     #+BEGIN_SRC sh
+     make NO_ROOT=1
+     #+END_SRC
    + Install JSROOT just in case we need it (for browser views of root files)
      #+BEGIN_SRC sh
      cd $HOME/midas/packages
