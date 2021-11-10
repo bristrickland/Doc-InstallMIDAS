@@ -38,7 +38,8 @@
      #+END_SRC
    + Checkout a release version
      #+BEGIN_SRC sh
-     git checkout midas-2020-08-a
+     git checkout release/midas-2020-08
+     git submodule update --init --recursive
      #+END_SRC
    + Build midas
      #+BEGIN_SRC sh
