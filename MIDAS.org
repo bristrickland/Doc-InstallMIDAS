@@ -56,7 +56,8 @@
      cd rootana
      #+END_SRC
      + Rootana needs ~-fPIC~ to work with EngeSpec
-     + Edit ~Makefile~ to include ~-fPIC~ in the ~CXXFLAGS~ definition at the top
+     + Edit ~Makefile~ to include ~-fPIC~ in the ~CXXFLAGS~ definition at the top, the line should look like
+     ~CXXFLAGS = -std=c++11 -O2 -g -Wall -Wuninitialized -I./include -fPIC~
      + compile (without ROOT support)
      #+BEGIN_SRC sh
      make NO_ROOT=1
@@ -93,6 +94,7 @@
      ls -l
      #+END_SRC
    + Test the system
+   + You may need to go into ~exptab~ and change the file locations listed
      #+BEGIN_SRC sh
      odbedit
      ls
